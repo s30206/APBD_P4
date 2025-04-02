@@ -9,7 +9,7 @@ public class AdvancedEmpDeptTests
     {
         var emps = Database.GetEmps();
 
-        decimal? maxSalary = (
+        var maxSalary = (
             from emp in emps
             select emp.Sal).Max(); 
 
@@ -23,7 +23,7 @@ public class AdvancedEmpDeptTests
     {
         var emps = Database.GetEmps();
 
-        decimal? minSalary = (
+        var minSalary = (
             from emp in emps
             where emp.DeptNo == 30
             select emp.Sal).Min();
@@ -129,9 +129,12 @@ public class AdvancedEmpDeptTests
     {
         var emps = Database.GetEmps();
 
-        // var result = null; 
-        //
-        // Assert.Contains(result, r => r.EName == "ALLEN" && r.Total == 1900);
+        var result = (
+            from emp in emps
+            let totalIncome = emp.Sal + (emp.Comm ?? 0)
+            select new { emp.EName, Total = totalIncome }).ToList();
+        
+        Assert.Contains(result, r => r.EName == "ALLEN" && r.Total == 1900);
     }
 
     // 20. Join all three: Emp → Dept → Salgrade
@@ -143,8 +146,13 @@ public class AdvancedEmpDeptTests
         var depts = Database.GetDepts();
         var grades = Database.GetSalgrades();
 
-        // var result = null; 
-        //
-        // Assert.Contains(result, r => r.EName == "ALLEN" && r.DName == "SALES" && r.Grade == 3);
+        var result = (
+            from emp in emps
+            join dept in depts on emp.DeptNo equals dept.DeptNo
+            from grade in grades
+            where emp.Sal >= grade.Losal && emp.Sal <= grade.Hisal
+            select new { emp.EName, dept.DName, Grade = grade.Grade }).ToList();
+        
+        Assert.Contains(result, r => r.EName == "ALLEN" && r.DName == "SALES" && r.Grade == 3);
     }
 }

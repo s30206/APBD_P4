@@ -130,16 +130,13 @@ public class EmpDeptSalgradeTests
         var grades = Database.GetSalgrades();
 
         // Broken
-        /*var result = (
+        var result = (
             from emp in emps
-            join grade in grades on emp.Sal
-            where emp.Sal <= grade.Hisal
+            from grade in grades
+            where emp.Sal >= grade.Losal && emp.Sal <= grade.Hisal
             select new { emp.EName, grade.Grade}).ToList();
         
-        Assert.Contains(result, r => r.EName == "ALLEN" && r.Grade == 3);*/
-        
-        // Intentionally failing test
-        Assert.True(false);
+        Assert.Contains(result, r => r.EName == "ALLEN" && r.Grade == 3);
     }
 
     // 9. Aggregation (AVG)
