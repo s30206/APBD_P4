@@ -132,11 +132,14 @@ public class EmpDeptSalgradeTests
         // Broken
         /*var result = (
             from emp in emps
-            join grade in grades on emp.Sal 
+            join grade in grades on emp.Sal
             where emp.Sal <= grade.Hisal
-            select new { emp.EName, grade.Grade}).ToList();*/
+            select new { emp.EName, grade.Grade}).ToList();
         
-        // Assert.Contains(result, r => r.EName == "ALLEN" && r.Grade == 3);
+        Assert.Contains(result, r => r.EName == "ALLEN" && r.Grade == 3);*/
+        
+        // Intentionally failing test
+        Assert.True(false);
     }
 
     // 9. Aggregation (AVG)
